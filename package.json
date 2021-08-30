@@ -2,16 +2,18 @@
   "name": "gaia-x-hackathon-visualization",
   "version": "1.0.0",
   "private": false,
-  "description": "Gaia-X Hackathon Visualization",
-  "author": "Moritz Kirstein, Albert Peci",
+  "description": "A simple app to display transactions from the Gaia-X DLT during the Gaia-X Hackathon #1.",
+  "author": "deltaDAO AG",
   "scripts": {
     "develop": "gatsby develop",
     "start": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
-    "clean": "gatsby clean"
+    "clean": "gatsby clean",
+    "get:history" : "node history.js"
   },
   "dependencies": {
+    "web3": "^1.5.2",
     "chart.js": "^3.5.1",
     "date-fns": "^2.23.0",
     "gatsby": "^3.12.1",
