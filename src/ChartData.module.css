@@ -1,0 +1,11 @@
+
+.container {
+    margin: auto;
+    max-height: 30rem;
+    max-width: 50rem;
+    text-align: center;
+}
+
+.container h1 {
+    font-size: 1.4rem;
+}
