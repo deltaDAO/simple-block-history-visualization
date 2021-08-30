@@ -1,0 +1,21 @@
+# Simple DLT Visualization
+An easy-to-use script to create a simple JSON file with a block history. This JSON file is then used to display the results in a simple graph.
+
+## Installation
+
+```bash
+# install dependencies
+npm i
+
+# run history script (this might take a while)
+npm run get:history
+
+# visualize results
+npm run start
+```
+
+## Project Overview
+
+This projects containts two components. A script to retrieve the block history and save it into a file. This file is then used by the web app - the second component.
+
+You can use a public Gaia-X node like `https://rpc.gaiaxtestnet.oceanprotocol.com` to retrieve the data. But this might take a while and you might be rate limited if you query the node too quickly. So make sure to call the sleep function in between the calls to avoid this issue.
