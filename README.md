@@ -24,4 +24,4 @@ You can use a public Gaia-X node like `https://rpc.gaiaxtestnet.oceanprotocol.co
 
 ### Web App
 
-The web app is a very basic [Gatsby](https://www.gatsbyjs.com/) project utilizing [Chart.js](https://www.chartjs.org/) to visualize the retrieved block history. To modify any displayed data simply jump straigt to the `src/ChartData.js` component and play around with the calculations.
+The web app is a very basic [Gatsby](https://www.gatsbyjs.com/) project utilizing [Chart.js](https://www.chartjs.org/) to visualize the retrieved block history. To modify any displayed data simply jump straight to the `src/ChartData.js` component and play around with the calculations.
