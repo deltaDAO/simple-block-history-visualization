@@ -12,10 +12,12 @@ const data = {
 	blocks: []
 };
 
-const retrievedBlocks = fs.existsSync(historyJsonPath) ?
+const retrievedBlockHistory = fs.existsSync(historyJsonPath) ?
 	JSON.parse(fs.readFileSync(historyJsonPath)) : undefined;
 
-const latestRetrievedBlock = retrievedBlocks?.blocks?.pop().currentBlockNumber || firstHackathonBlock;
+const latestRetrievedBlock = 
+	retrievedBlockHistory?.blocks[retrievedBlockHistory.blocks.length - 1]?.currentBlockNumber || 
+	firstHackathonBlock;
 
 /**
  * Uses a setTimeout and Promise to simulate a sleep (inaccurate).
@@ -50,10 +52,11 @@ function writeJSON() {
  */
 async function getBlockHistory() {
 	if(latestRetrievedBlock !== firstHackathonBlock) {
-		console.log(`Already retrieved ${latestRetrievedBlock - firstHackathonBlock} blocks`)
-		data.blocks.concat(retrievedBlocks)
+		console.log(`📥 Already retrieved ${latestRetrievedBlock - firstHackathonBlock} blocks`);
+		
+		data.blocks = data.blocks.concat(retrievedBlockHistory.blocks);
 	}
-
+	
 	const {number: latestBlockNumber} = await getBlockByBlockHashOrBlockNumber('latest');
 	console.log(`📥 Downloading ${latestBlockNumber - latestRetrievedBlock} blocks (${latestRetrievedBlock}/${latestBlockNumber})`);
 
