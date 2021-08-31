@@ -1,7 +1,7 @@
 const fs = require('fs');
 const Web3 = require('web3');
 
-const providerURL = `https://rpc.gaiaxtestnet.oceanprotocol.com` // or use your local node 'http://localhost:7545'
+const providerURL = `https://rpc.gaiaxtestnet.oceanprotocol.com` // or use your local node 'http://localhost:8545'
 const web3 = new Web3(new Web3.providers.HttpProvider(providerURL));
 
 const historyJsonPath = './src/content/blockHistory.json';
@@ -63,9 +63,9 @@ async function getBlockHistory() {
 	for (let currentBlockNumber = latestRetrievedBlock; currentBlockNumber < latestBlockNumber; currentBlockNumber++) {
 		try {
 			await sleep(100); // can be removed if you are using your own node locally 
-			const {miner, timestamp, transactions } = await getBlockByBlockHashOrBlockNumber(currentBlockNumber);
-			data.blocks.push({ currentBlockNumber, miner, timestamp, transactions })
-			console.log(`${currentBlockNumber}/${latestBlockNumber}: `, miner, timestamp, transactions)
+			const {miner: node, timestamp, transactions } = await getBlockByBlockHashOrBlockNumber(currentBlockNumber);
+			data.blocks.push({ currentBlockNumber, node, timestamp, transactions })
+			console.log(`${currentBlockNumber}/${latestBlockNumber}: `, node, timestamp, transactions)
 		}
 		catch(e) {
 			writeJSON();

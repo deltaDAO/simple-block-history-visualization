@@ -11,7 +11,7 @@ const contentQuery = graphql`
       childContentJson {
         blocks {
           currentBlockNumber
-          miner
+          node
           timestamp
           transactions
         }
@@ -33,10 +33,10 @@ export default function ChartData () {
     const random_rgb = (r = 1, g = 1, b = 1) => `rgb(${r ? random_rgb_val() : 0}, ${g ? random_rgb_val() : 0}, ${b ? random_rgb_val() : 0})`
 
     useEffect(() => {
-        let miners = []
+        let nodes = []
         const groupedByHour = _.groupBy(blocks, block => {
-            //Find unique miners
-            if(!miners.includes(block.miner)) miners.push(block.miner)
+            //Find unique nodes
+            if(!nodes.includes(block.node)) nodes.push(block.node)
             //Create timestamp for each hour
             return format(new Date(block.timestamp * 1000), 'dd.MM - HH:00')
         })
@@ -47,10 +47,10 @@ export default function ChartData () {
             group.reduce((pv, cv) => pv += cv.transactions.length, 0)
         )
 
-        const groupedByMiner = miners.map(miner => 
+        const groupedByNode = nodes.map(node => 
             Object.values(groupedByHour).map(group => 
-                //summarize transaction count per group & hour, while filtering for a given miner
-                group.reduce((pv, cv) => cv.miner === miner ? pv += cv.transactions.length : pv, 0)
+                //summarize transaction count per group & hour, while filtering for a given node
+                group.reduce((pv, cv) => cv.node === node ? pv += cv.transactions.length : pv, 0)
             )
         )
         
@@ -62,10 +62,10 @@ export default function ChartData () {
             tension: graphTension
         }]
 
-        //add miner specific data
-        groupedByMiner.map((group, i) => {
+        //add node specific data
+        groupedByNode.map((group, i) => {
             datasets.push({
-                label: `Miner ${readableHash(miners[i])}`,
+                label: `Node ${readableHash(nodes[i])}`,
                 data: group,
                 borderColor: random_rgb(1, 1, 0),
                 tension: graphTension
