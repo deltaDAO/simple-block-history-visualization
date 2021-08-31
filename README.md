@@ -1,6 +1,8 @@
 # Simple Block History Visualization
 An easy-to-use script to create a simple JSON file with a block history. This JSON file is then used to display the results in a simple graph.
 
+![image](https://user-images.githubusercontent.com/75223088/131488702-ce7e51ef-252d-4fff-a24b-1892140aa592.png)
+
 ## Installation
 
 ```bash
