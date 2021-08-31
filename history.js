@@ -4,7 +4,18 @@ const Web3 = require('web3');
 const providerURL = `https://rpc.gaiaxtestnet.oceanprotocol.com` // or use your local node 'http://localhost:7545'
 const web3 = new Web3(new Web3.providers.HttpProvider(providerURL));
 
+const historyJsonPath = './src/content/blockHistory.json';
+
 const firstHackathonBlock = 1623079; // corresponds to 30/09/21, 12:00 AM UTC
+
+const data = {
+	blocks: []
+};
+
+const retrievedBlocks = fs.existsSync(historyJsonPath) ?
+	JSON.parse(fs.readFileSync(historyJsonPath)) : undefined;
+
+const latestRetrievedBlock = retrievedBlocks?.blocks?.pop().currentBlockNumber || firstHackathonBlock;
 
 /**
  * Uses a setTimeout and Promise to simulate a sleep (inaccurate).
@@ -23,8 +34,13 @@ function sleep(milliseconds) {
  */
 async function getBlockByBlockHashOrBlockNumber(blockHashOrBlockNumber) {
 	const block = await web3.eth.getBlock(blockHashOrBlockNumber);
-
+	
 	return block;
+}
+
+function writeJSON() {
+	console.log('Writing blockHistory.json');
+	fs.writeFile(historyJsonPath, JSON.stringify(data), (err, result) => console.log);
 }
 
 /**
@@ -33,21 +49,28 @@ async function getBlockByBlockHashOrBlockNumber(blockHashOrBlockNumber) {
  * @returns {} 
  */
 async function getBlockHistory() {
-	const data = {
-		blocks: []
-	};
-
-	const {number: latestBlockNumber} = await getBlockByBlockHashOrBlockNumber('latest');
-	console.log(`📥 Downloading ${latestBlockNumber - firstHackathonBlock} blocks (${firstHackathonBlock}/${latestBlockNumber})`);
-
-	for (let currentBlockNumber = firstHackathonBlock; currentBlockNumber < latestBlockNumber; currentBlockNumber++) {
-		await sleep(100); // can be removed if you are using your own node locally 
-		const {miner, timestamp, transactions } = await getBlockByBlockHashOrBlockNumber(currentBlockNumber);
-		data.blocks.push({ currentBlockNumber, miner, timestamp, transactions })
-		console.log(`${currentBlockNumber}/${latestBlockNumber}: `, miner, timestamp, transactions)
+	if(latestRetrievedBlock !== firstHackathonBlock) {
+		console.log(`Already retrieved ${latestRetrievedBlock - firstHackathonBlock} blocks`)
+		data.blocks.concat(retrievedBlocks)
 	}
 
-	fs.writeFile("./src/content/blockHistory.json", JSON.stringify(data), (err, result) => console.log);
+	const {number: latestBlockNumber} = await getBlockByBlockHashOrBlockNumber('latest');
+	console.log(`📥 Downloading ${latestBlockNumber - latestRetrievedBlock} blocks (${latestRetrievedBlock}/${latestBlockNumber})`);
+
+	for (let currentBlockNumber = latestRetrievedBlock; currentBlockNumber < latestBlockNumber; currentBlockNumber++) {
+		try {
+			await sleep(100); // can be removed if you are using your own node locally 
+			const {miner, timestamp, transactions } = await getBlockByBlockHashOrBlockNumber(currentBlockNumber);
+			data.blocks.push({ currentBlockNumber, miner, timestamp, transactions })
+			console.log(`${currentBlockNumber}/${latestBlockNumber}: `, miner, timestamp, transactions)
+		}
+		catch(e) {
+			writeJSON();
+			console.error(e);
+		}
+	}
+
+	writeJSON();
 } 
 
 getBlockHistory();
