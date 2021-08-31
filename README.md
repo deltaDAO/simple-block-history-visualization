@@ -1,4 +1,4 @@
-# Simple DLT Visualization
+# Simple Block History Visualization
 An easy-to-use script to create a simple JSON file with a block history. This JSON file is then used to display the results in a simple graph.
 
 ## Installation
@@ -40,6 +40,7 @@ You can use a public Gaia-X node like `https://rpc.gaiaxtestnet.oceanprotocol.co
 **timestamp**. The time when the block was created. 
 
 **transactions**. An array of all transaction hashes for that specific block. These hashes are unique and can be used to retrieve detailed information about a specific transaction.
+
 ### Web App
 
 The web app is a very basic [Gatsby](https://www.gatsbyjs.com/) project utilizing [Chart.js](https://www.chartjs.org/) to visualize the retrieved block history. To modify any displayed data simply jump straight to the `src/ChartData.js` component and play around with the calculations.
