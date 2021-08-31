@@ -1,6 +1,8 @@
 # Simple Block History Visualization
 An easy-to-use script to create a simple JSON file with a block history. This JSON file is then used to display the results in a simple graph.
 
+![image](https://user-images.githubusercontent.com/75223088/131488702-ce7e51ef-252d-4fff-a24b-1892140aa592.png)
+
 ## Installation
 
 ```bash
@@ -37,7 +39,7 @@ You can use a public Gaia-X node like `https://rpc.gaiaxtestnet.oceanprotocol.co
 
 **node.** An Gaia-X account address encoded as HEX. It represents the node that created the block. 
 
-**timestamp**. The time when the block was created. 
+**timestamp**. A Unix timestamp when the block was created. 
 
 **transactions**. An array of all transaction hashes for that specific block. These hashes are unique and can be used to retrieve detailed information about a specific transaction.
 
