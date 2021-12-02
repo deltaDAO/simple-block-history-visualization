@@ -8,6 +8,7 @@ export default function IndexPage() {
     <main className="container mx-auto px-4">
       <title>Gaia-X Test Network Hackathon Visualization</title>
       <HeroSection />
+      <TotalTransactions />
       <ChartData />
     </main>
   );
